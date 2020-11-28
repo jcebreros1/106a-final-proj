@@ -126,6 +126,7 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/hames10/ros_workspaces/106a-final-proj/build/gtest/cmake_install.cmake")
+  include("/home/hames10/ros_workspaces/106a-final-proj/build/planning/cmake_install.cmake")
 
 endif()
 
