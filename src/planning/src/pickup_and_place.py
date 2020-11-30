@@ -16,12 +16,11 @@ from moveit_msgs.msg import OrientationConstraint
 from geometry_msgs.msg import PoseStamped
 
 from path_planner import PathPlanner
+from baxter_interface import gripper as robot_gripper
 
 # Uncomment this line for part 5 of Lab 5
 # from controller import Controller
-def callback(message):
-    print(message.name)
-    print(message.pose)
+
 
 def main():
     """
@@ -31,7 +30,7 @@ def main():
     # Make sure that you've looked at and understand path_planner.py before starting
 
     planner = PathPlanner("right_arm")
-
+    right_gripper = robot_gripper.Gripper('right')
 	
 
     #-----------------------------------------------------#
@@ -64,13 +63,11 @@ def main():
     orien_const.absolute_y_axis_tolerance = 0.1;
     orien_const.absolute_z_axis_tolerance = 0.1;
     orien_const.weight = 1.0;
-
-    def move_to_goal(x, y, z, orien_const=[], or_x=0.0, or_y=-1.0, or_z=0.0, or_w=0.0):
-        right_gripper = robot_gripper.Gripper('right')
-        right_gripper.calibrate()
-        rospy.sleep(2.0)
-        right_gripper.open()
+    def closeGripper():
+        right_gripper.close()
         rospy.sleep(1.0)
+
+    def move_to_block(x, y, z, orien_const=[], or_x=0.0, or_y=-1.0, or_z=0.0, or_w=0.0):
         while not rospy.is_shutdown():
             try:
                 goal = PoseStamped()
@@ -95,28 +92,34 @@ def main():
                 if not planner.execute_plan(plan):
                     raise Exception("Execution failed")
                 else:
-                    right_gripper.close()
-                    rospy.sleep(1.0)
+                    closeGripper()
+                    
             except Exception as e:
                 print e
                 traceback.print_exc()
             else:
                 break
 
+    def move_to_goalPosition(x, y, z):
 
+
+    def callback(message):
+        print(message.name)
+        print(message.pose)
+
+    pos = raw_input("Enter a goal Position for the cubes: [x, y, z]")
+    eval(pos)
+    rospy.Subscriber("gazebo/model_states",ModelState, callback)
     while not rospy.is_shutdown():
 
     # Set your goal positions here
-        sub = rospy.Subscriber("gazebo/model_states",ModelState, callback)
         zoffset = .92
         x= 0.4225
         y= -0.1265
         z= 0.772499999999
-
-    	move_to_goal(x, y, z-zoffset)
-        move_to_goal(x, y, (z-zoffset+.05))
-        move_to_goal(x, y-.3, (z-zoffset+.05))
-
+        hoverDist = 0.15
+    	move_to_block(x, y, z-zoffset+hoverDist)
+        move_to_goalPosition(pos[0], pos[1], pos[2])
 
 
 if __name__ == '__main__':
