@@ -29,13 +29,19 @@ def main():
 
     # Make sure that you've looked at and understand path_planner.py before starting
 
+
     planner = PathPlanner("right_arm")
     right_gripper = robot_gripper.Gripper('right')
+    def closeGripper():
+        right_gripper.close()
+        rospy.sleep(1.0)
+    def openGripper():
+        right_gripper.open()
+        rospy.sleep(1.0)
     print('Calibrating...')
     right_gripper.calibrate()
     rospy.sleep(2.0)
-	
-
+    openGripper()
     #-----------------------------------------------------#
     ## Add any obstacles to the planning scene here
     position = PoseStamped()
@@ -66,12 +72,7 @@ def main():
     orien_const.absolute_y_axis_tolerance = 0.1;
     orien_const.absolute_z_axis_tolerance = 0.1;
     orien_const.weight = 1.0;
-    def closeGripper():
-        right_gripper.close()
-        rospy.sleep(1.0)
-    def openGripper():
-        right_gripper.open()
-        rospy.sleep(1.0)
+    
 
     def move_to_block(x, y, z, gX, gY, gZ, orien_const=[], or_x=0.0, or_y=-1.0, or_z=0.0, or_w=0.0):
         while not rospy.is_shutdown():
@@ -152,7 +153,7 @@ def main():
         x= 0.4225
         y= -0.1265
         z= 0.772499999999
-        hoverDist = 0.15
+        hoverDist = 0.015
     	move_to_block(x, y, z-zoffset+hoverDist, pos[0], pos[1], pos[2])
         
 
