@@ -100,7 +100,7 @@ def main():
                     raise Exception("Execution failed")
                 else:
                     closeGripper()
-                    move_to_goalPosition(gX, gY, gZ)
+                    move_to_goalPosition(gX, gY, gZ, orien_const)
                     
             except Exception as e:
                 print e
@@ -108,7 +108,7 @@ def main():
             else:
                 break
     #move to goal
-    def move_to_goalPosition(x, y, z):
+    def move_to_goalPosition(x, y, z, orien_const):
         try:
             goal = PoseStamped()
             goal.header.frame_id = "base"
@@ -124,7 +124,7 @@ def main():
             goal.pose.orientation.z = 0.0
             goal.pose.orientation.w = 0.0
 
-            plan = planner.plan_to_pose(goal, [])
+            plan = planner.plan_to_pose(goal, orien_const)
             raw_input("Press <Enter> to move the right arm to goal pose: ")
 
         
