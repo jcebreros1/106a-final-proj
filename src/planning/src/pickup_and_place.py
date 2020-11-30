@@ -72,7 +72,7 @@ def main():
     def openGripper():
         right_gripper.open()
         rospy.sleep(1.0)
-        
+
     def move_to_block(x, y, z, gX, gY, gZ, orien_const=[], or_x=0.0, or_y=-1.0, or_z=0.0, or_w=0.0):
         while not rospy.is_shutdown():
             try:
@@ -106,7 +106,7 @@ def main():
                 traceback.print_exc()
             else:
                 break
-
+    #move to goal
     def move_to_goalPosition(x, y, z):
         try:
             goal = PoseStamped()
