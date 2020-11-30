@@ -31,6 +31,9 @@ def main():
 
     planner = PathPlanner("right_arm")
     right_gripper = robot_gripper.Gripper('right')
+    print('Calibrating...')
+    right_gripper.calibrate()
+    rospy.sleep(2.0)
 	
 
     #-----------------------------------------------------#
@@ -66,8 +69,11 @@ def main():
     def closeGripper():
         right_gripper.close()
         rospy.sleep(1.0)
-
-    def move_to_block(x, y, z, orien_const=[], or_x=0.0, or_y=-1.0, or_z=0.0, or_w=0.0):
+    def openGripper():
+        right_gripper.open()
+        rospy.sleep(1.0)
+        
+    def move_to_block(x, y, z, gX, gY, gZ, orien_const=[], or_x=0.0, or_y=-1.0, or_z=0.0, or_w=0.0):
         while not rospy.is_shutdown():
             try:
                 goal = PoseStamped()
@@ -78,7 +84,7 @@ def main():
                 goal.pose.position.y = y
                 goal.pose.position.z = z
 
-		    #Orientation as a quaternion
+		        #Orientation as a quaternion
                 goal.pose.orientation.x = or_x
                 goal.pose.orientation.y = or_y
                 goal.pose.orientation.z = or_z
@@ -86,13 +92,14 @@ def main():
 
                 plan = planner.plan_to_pose(goal, orien_const)
 
-                raw_input("Press <Enter> to move the right arm to goal pose: ")
+                raw_input("Press <Enter> to move the right arm to block pose: ")
 
                 # Might have to edit this for part 5
                 if not planner.execute_plan(plan):
                     raise Exception("Execution failed")
                 else:
                     closeGripper()
+                    move_to_goalPosition(gX, gY, gZ)
                     
             except Exception as e:
                 print e
@@ -101,7 +108,35 @@ def main():
                 break
 
     def move_to_goalPosition(x, y, z):
+        try:
+            goal = PoseStamped()
+            goal.header.frame_id = "base"
 
+            #x, y, and z position
+            goal.pose.position.x = x
+            goal.pose.position.y = y
+            goal.pose.position.z = z
+
+            #Orientation as a quaternion
+            goal.pose.orientation.x = 0.0
+            goal.pose.orientation.y = -1.0
+            goal.pose.orientation.z = 0.0
+            goal.pose.orientation.w = 0.0
+
+            plan = planner.plan_to_pose(goal, [])
+            raw_input("Press <Enter> to move the right arm to goal pose: ")
+
+        
+            if not planner.execute_plan(plan):
+                raise Exception("Execution failed")
+            else:
+                #open the Gripper and move from there
+                openGripper()
+
+                return
+        except Exception as e:
+            print e
+            traceback.print_exc()
 
     def callback(message):
         print(message.name)
@@ -118,8 +153,8 @@ def main():
         y= -0.1265
         z= 0.772499999999
         hoverDist = 0.15
-    	move_to_block(x, y, z-zoffset+hoverDist)
-        move_to_goalPosition(pos[0], pos[1], pos[2])
+    	move_to_block(x, y, z-zoffset+hoverDist, pos[0], pos[1], pos[2])
+        
 
 
 if __name__ == '__main__':
