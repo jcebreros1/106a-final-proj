@@ -14,6 +14,7 @@ import traceback
 
 from moveit_msgs.msg import OrientationConstraint
 from geometry_msgs.msg import PoseStamped
+from baxter_interface import gripper as robot_gripper
 
 from path_planner import PathPlanner
 
@@ -68,7 +69,7 @@ def main():
     def move_to_goal(x, y, z, orien_const=[], or_x=0.0, or_y=-1.0, or_z=0.0, or_w=0.0):
         right_gripper = robot_gripper.Gripper('right')
         right_gripper.calibrate()
-        rospy.sleep(2.0)
+        rospy.sleep(1.0)
         right_gripper.open()
         rospy.sleep(1.0)
         while not rospy.is_shutdown():
