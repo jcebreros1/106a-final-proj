@@ -1,8 +1,0 @@
-prefix=/home/hames10/ros_workspaces/106a-final-proj/devel
-
-Name: ik
-Description: Description of ik
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

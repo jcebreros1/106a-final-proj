@@ -1,1 +1,0 @@
-/home/hames10/rethink_ws/baxter.sh
