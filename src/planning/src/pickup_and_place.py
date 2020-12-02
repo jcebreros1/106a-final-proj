@@ -8,7 +8,7 @@ import sys
 from baxter_interface import Limb
 
 import rospy
-from gazebo_msgs.msg import ModelState
+from gazebo_msgs.msg import ModelStates
 import numpy as np
 import traceback
 
@@ -21,6 +21,7 @@ from baxter_interface import gripper as robot_gripper
 # Uncomment this line for part 5 of Lab 5
 # from controller import Controller
 
+blockPositions = [0]*2
 
 def main():
     """
@@ -29,7 +30,17 @@ def main():
 
     # Make sure that you've looked at and understand path_planner.py before starting
 
+    def callback(message):
+        blockPositions[0] = message.pose[3]
+        blockPositions[1] = message.pose[4]
+        #print('----')
+        #print(blockPositions[1].position.x)
+        #print(message.name)
+        #print(message.pose)
+        #rospy.wait_for_message(topic, data type)
 
+    rospy.init_node('moveit_node')
+    rospy.Subscriber("gazebo/model_states",ModelStates, callback)
     planner = PathPlanner("right_arm")
     right_gripper = robot_gripper.Gripper('right')
     def closeGripper():
@@ -38,10 +49,10 @@ def main():
     def openGripper():
         right_gripper.open()
         rospy.sleep(1.0)
-    print('Calibrating...')
-    right_gripper.calibrate()
-    rospy.sleep(2.0)
-    openGripper()
+    #print('Calibrating...')
+    #right_gripper.calibrate()
+    #rospy.sleep(2.0)
+    #openGripper()
     #-----------------------------------------------------#
     ## Add any obstacles to the planning scene here
     position = PoseStamped()
@@ -74,16 +85,19 @@ def main():
     orien_const.weight = 1.0;
     
 
-    def move_to_block(x, y, z, gX, gY, gZ, orien_const=[], or_x=0.0, or_y=-1.0, or_z=0.0, or_w=0.0):
+    def move_to_block(x, y, z, openGrip,  orien_const=[], or_x=0.0, or_y=-1.0, or_z=0.0, or_w=0.0):
         while not rospy.is_shutdown():
             try:
                 goal = PoseStamped()
                 goal.header.frame_id = "base"
+                hoverDist = 0.015
+                y_threshhold = 0.05
+                zoffset = .92
 
                 #x, y, and z position
                 goal.pose.position.x = x
-                goal.pose.position.y = y
-                goal.pose.position.z = z
+                goal.pose.position.y = y+y_threshhold
+                goal.pose.position.z = z-zoffset+hoverDist
 
 		        #Orientation as a quaternion
                 goal.pose.orientation.x = or_x
@@ -98,66 +112,40 @@ def main():
                 # Might have to edit this for part 5
                 if not planner.execute_plan(plan):
                     raise Exception("Execution failed")
-                else:
-                    closeGripper()
-                    move_to_goalPosition(gX, gY, gZ, orien_const)
+                #else:
+                #    if openGrip:
+                #        openGripper()
+                #    closeGripper()
                     
             except Exception as e:
                 print e
                 traceback.print_exc()
             else:
                 break
-    #move to goal
-    def move_to_goalPosition(x, y, z, orien_const):
-        try:
-            goal = PoseStamped()
-            goal.header.frame_id = "base"
 
-            #x, y, and z position
-            goal.pose.position.x = x
-            goal.pose.position.y = y
-            goal.pose.position.z = z
 
-            #Orientation as a quaternion
-            goal.pose.orientation.x = 0.0
-            goal.pose.orientation.y = -1.0
-            goal.pose.orientation.z = 0.0
-            goal.pose.orientation.w = 0.0
 
-            plan = planner.plan_to_pose(goal, orien_const)
-            raw_input("Press <Enter> to move the right arm to goal pose: ")
+    #pos = raw_input("Enter a goal Position for the cubes: [x, y, z]")
+    #pos = eval(pos)
+    #rospy.init_node('my_node_name', anonymous=True)
+    #rospy.Subscriber("gazebo/model_states",ModelStates, callback)
 
-        
-            if not planner.execute_plan(plan):
-                raise Exception("Execution failed")
-            else:
-                #open the Gripper and move from there
-                openGripper()
+    def getBlockPosition():
+        return blockPositions[1].position.x,blockPositions[1].position.y,blockPositions[1].position.z
 
-                return
-        except Exception as e:
-            print e
-            traceback.print_exc()
-
-    def callback(message):
-        print(message.name)
-        print(message.pose)
-
-    pos = raw_input("Enter a goal Position for the cubes: [x, y, z]")
-    eval(pos)
-    rospy.Subscriber("gazebo/model_states",ModelState, callback)
     while not rospy.is_shutdown():
 
     # Set your goal positions here
-        zoffset = .92
-        x= 0.4225
-        y= -0.1265
-        z= 0.772499999999
-        hoverDist = 0.015
-    	move_to_block(x, y, z-zoffset+hoverDist, pos[0], pos[1], pos[2])
-        
+        #zoffset = .92
+        #x= 0.4225
+        #y= -0.1265
+        #z= 0.772499999999
+        #hoverDist = 0.015
+        #y_threshhold = 0.05
+        x,y,z = getBlockPosition()
+    	move_to_block(x, y, z, False)
+        #move_to_block(pos[0], pos[1], pos[2], True)
 
 
 if __name__ == '__main__':
-    rospy.init_node('moveit_node')
     main()
