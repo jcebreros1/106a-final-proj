@@ -1,8 +1,8 @@
-# Install script for directory: /home/jesuscebreros/ros_workspaces/106a-final-proj/src/planning
+# Install script for directory: /home/hames10/ros_workspaces/106a-final-proj/src/planning
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/jesuscebreros/ros_workspaces/106a-final-proj/install")
+  set(CMAKE_INSTALL_PREFIX "/home/hames10/ros_workspaces/106a-final-proj/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -33,17 +33,17 @@ if(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
 endif()
 
 if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/jesuscebreros/ros_workspaces/106a-final-proj/build/planning/catkin_generated/installspace/planning.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/hames10/ros_workspaces/106a-final-proj/build/planning/catkin_generated/installspace/planning.pc")
 endif()
 
 if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/planning/cmake" TYPE FILE FILES
-    "/home/jesuscebreros/ros_workspaces/106a-final-proj/build/planning/catkin_generated/installspace/planningConfig.cmake"
-    "/home/jesuscebreros/ros_workspaces/106a-final-proj/build/planning/catkin_generated/installspace/planningConfig-version.cmake"
+    "/home/hames10/ros_workspaces/106a-final-proj/build/planning/catkin_generated/installspace/planningConfig.cmake"
+    "/home/hames10/ros_workspaces/106a-final-proj/build/planning/catkin_generated/installspace/planningConfig-version.cmake"
     )
 endif()
 
 if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/planning" TYPE FILE FILES "/home/jesuscebreros/ros_workspaces/106a-final-proj/src/planning/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/planning" TYPE FILE FILES "/home/hames10/ros_workspaces/106a-final-proj/src/planning/package.xml")
 endif()
 

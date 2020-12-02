@@ -1,4 +1,4 @@
-prefix=/home/jesuscebreros/ros_workspaces/106a-final-proj/devel
+prefix=/home/hames10/ros_workspaces/106a-final-proj/devel
 
 Name: planning
 Description: Description of planning

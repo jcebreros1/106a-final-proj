@@ -49,10 +49,10 @@ def main():
     def openGripper():
         right_gripper.open()
         rospy.sleep(1.0)
-    #print('Calibrating...')
-    #right_gripper.calibrate()
-    #rospy.sleep(2.0)
-    #openGripper()
+    print('Calibrating...')
+    right_gripper.calibrate()
+    rospy.sleep(2.0)
+    openGripper()
     #-----------------------------------------------------#
     ## Add any obstacles to the planning scene here
     position = PoseStamped()
@@ -112,11 +112,11 @@ def main():
                 # Might have to edit this for part 5
                 if not planner.execute_plan(plan):
                     raise Exception("Execution failed")
-                #else:
-                #    if openGrip:
-                #        openGripper()
-                #    closeGripper()
-                    
+                else:
+                    if openGrip:
+                        openGripper()
+                    else:
+                        closeGripper()      
             except Exception as e:
                 print e
                 traceback.print_exc()
@@ -144,7 +144,7 @@ def main():
         #y_threshhold = 0.05
         x,y,z = getBlockPosition()
     	move_to_block(x, y, z, False)
-        #move_to_block(pos[0], pos[1], pos[2], True)
+        move_to_block(x, y, z + 0.05, True)
 
 
 if __name__ == '__main__':

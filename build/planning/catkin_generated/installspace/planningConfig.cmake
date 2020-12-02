@@ -67,14 +67,14 @@ set(planning_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(planning_SOURCE_PREFIX /home/jesuscebreros/ros_workspaces/106a-final-proj/src/planning)
-  set(planning_DEVEL_PREFIX /home/jesuscebreros/ros_workspaces/106a-final-proj/devel)
+  set(planning_SOURCE_PREFIX /home/hames10/ros_workspaces/106a-final-proj/src/planning)
+  set(planning_DEVEL_PREFIX /home/hames10/ros_workspaces/106a-final-proj/devel)
   set(planning_INSTALL_PREFIX "")
   set(planning_PREFIX ${planning_DEVEL_PREFIX})
 else()
   set(planning_SOURCE_PREFIX "")
   set(planning_DEVEL_PREFIX "")
-  set(planning_INSTALL_PREFIX /home/jesuscebreros/ros_workspaces/106a-final-proj/install)
+  set(planning_INSTALL_PREFIX /home/hames10/ros_workspaces/106a-final-proj/install)
   set(planning_PREFIX ${planning_INSTALL_PREFIX})
 endif()
 
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/jesuscebreros/ros_workspaces/106a-final-proj/install/lib;/home/jesuscebreros/rethink_ws/devel/lib;/opt/ros/kinetic/lib)
+    foreach(path /home/hames10/ros_workspaces/106a-final-proj/install/lib;/home/hames10/rethink_ws/devel/lib;/opt/ros/kinetic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

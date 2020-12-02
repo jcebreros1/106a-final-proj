@@ -1,8 +1,8 @@
-# Install script for directory: /home/jesuscebreros/ros_workspaces/106a-final-proj/src
+# Install script for directory: /home/hames10/ros_workspaces/106a-final-proj/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/jesuscebreros/ros_workspaces/106a-final-proj/install")
+  set(CMAKE_INSTALL_PREFIX "/home/hames10/ros_workspaces/106a-final-proj/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -44,89 +44,90 @@ endif()
 
 if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/jesuscebreros/ros_workspaces/106a-final-proj/install/_setup_util.py")
+   "/home/hames10/ros_workspaces/106a-final-proj/install/_setup_util.py")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/jesuscebreros/ros_workspaces/106a-final-proj/install" TYPE PROGRAM FILES "/home/jesuscebreros/ros_workspaces/106a-final-proj/build/catkin_generated/installspace/_setup_util.py")
+file(INSTALL DESTINATION "/home/hames10/ros_workspaces/106a-final-proj/install" TYPE PROGRAM FILES "/home/hames10/ros_workspaces/106a-final-proj/build/catkin_generated/installspace/_setup_util.py")
 endif()
 
 if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/jesuscebreros/ros_workspaces/106a-final-proj/install/env.sh")
+   "/home/hames10/ros_workspaces/106a-final-proj/install/env.sh")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/jesuscebreros/ros_workspaces/106a-final-proj/install" TYPE PROGRAM FILES "/home/jesuscebreros/ros_workspaces/106a-final-proj/build/catkin_generated/installspace/env.sh")
+file(INSTALL DESTINATION "/home/hames10/ros_workspaces/106a-final-proj/install" TYPE PROGRAM FILES "/home/hames10/ros_workspaces/106a-final-proj/build/catkin_generated/installspace/env.sh")
 endif()
 
 if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/jesuscebreros/ros_workspaces/106a-final-proj/install/setup.bash;/home/jesuscebreros/ros_workspaces/106a-final-proj/install/local_setup.bash")
+   "/home/hames10/ros_workspaces/106a-final-proj/install/setup.bash;/home/hames10/ros_workspaces/106a-final-proj/install/local_setup.bash")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/jesuscebreros/ros_workspaces/106a-final-proj/install" TYPE FILE FILES
-    "/home/jesuscebreros/ros_workspaces/106a-final-proj/build/catkin_generated/installspace/setup.bash"
-    "/home/jesuscebreros/ros_workspaces/106a-final-proj/build/catkin_generated/installspace/local_setup.bash"
+file(INSTALL DESTINATION "/home/hames10/ros_workspaces/106a-final-proj/install" TYPE FILE FILES
+    "/home/hames10/ros_workspaces/106a-final-proj/build/catkin_generated/installspace/setup.bash"
+    "/home/hames10/ros_workspaces/106a-final-proj/build/catkin_generated/installspace/local_setup.bash"
     )
 endif()
 
 if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/jesuscebreros/ros_workspaces/106a-final-proj/install/setup.sh;/home/jesuscebreros/ros_workspaces/106a-final-proj/install/local_setup.sh")
+   "/home/hames10/ros_workspaces/106a-final-proj/install/setup.sh;/home/hames10/ros_workspaces/106a-final-proj/install/local_setup.sh")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/jesuscebreros/ros_workspaces/106a-final-proj/install" TYPE FILE FILES
-    "/home/jesuscebreros/ros_workspaces/106a-final-proj/build/catkin_generated/installspace/setup.sh"
-    "/home/jesuscebreros/ros_workspaces/106a-final-proj/build/catkin_generated/installspace/local_setup.sh"
+file(INSTALL DESTINATION "/home/hames10/ros_workspaces/106a-final-proj/install" TYPE FILE FILES
+    "/home/hames10/ros_workspaces/106a-final-proj/build/catkin_generated/installspace/setup.sh"
+    "/home/hames10/ros_workspaces/106a-final-proj/build/catkin_generated/installspace/local_setup.sh"
     )
 endif()
 
 if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/jesuscebreros/ros_workspaces/106a-final-proj/install/setup.zsh;/home/jesuscebreros/ros_workspaces/106a-final-proj/install/local_setup.zsh")
+   "/home/hames10/ros_workspaces/106a-final-proj/install/setup.zsh;/home/hames10/ros_workspaces/106a-final-proj/install/local_setup.zsh")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/jesuscebreros/ros_workspaces/106a-final-proj/install" TYPE FILE FILES
-    "/home/jesuscebreros/ros_workspaces/106a-final-proj/build/catkin_generated/installspace/setup.zsh"
-    "/home/jesuscebreros/ros_workspaces/106a-final-proj/build/catkin_generated/installspace/local_setup.zsh"
+file(INSTALL DESTINATION "/home/hames10/ros_workspaces/106a-final-proj/install" TYPE FILE FILES
+    "/home/hames10/ros_workspaces/106a-final-proj/build/catkin_generated/installspace/setup.zsh"
+    "/home/hames10/ros_workspaces/106a-final-proj/build/catkin_generated/installspace/local_setup.zsh"
     )
 endif()
 
 if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/jesuscebreros/ros_workspaces/106a-final-proj/install/.rosinstall")
+   "/home/hames10/ros_workspaces/106a-final-proj/install/.rosinstall")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/jesuscebreros/ros_workspaces/106a-final-proj/install" TYPE FILE FILES "/home/jesuscebreros/ros_workspaces/106a-final-proj/build/catkin_generated/installspace/.rosinstall")
+file(INSTALL DESTINATION "/home/hames10/ros_workspaces/106a-final-proj/install" TYPE FILE FILES "/home/hames10/ros_workspaces/106a-final-proj/build/catkin_generated/installspace/.rosinstall")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/jesuscebreros/ros_workspaces/106a-final-proj/build/gtest/cmake_install.cmake")
-  include("/home/jesuscebreros/ros_workspaces/106a-final-proj/build/planning/cmake_install.cmake")
+  include("/home/hames10/ros_workspaces/106a-final-proj/build/gtest/cmake_install.cmake")
+  include("/home/hames10/ros_workspaces/106a-final-proj/build/ik/cmake_install.cmake")
+  include("/home/hames10/ros_workspaces/106a-final-proj/build/planning/cmake_install.cmake")
 
 endif()
 
@@ -138,5 +139,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/jesuscebreros/ros_workspaces/106a-final-proj/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/hames10/ros_workspaces/106a-final-proj/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
