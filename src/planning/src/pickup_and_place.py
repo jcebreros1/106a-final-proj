@@ -50,9 +50,9 @@ def main():
         right_gripper.open()
         rospy.sleep(1.0)
     #print('Calibrating...')
-    #right_gripper.calibrate()
-    #rospy.sleep(2.0)
-    #openGripper()
+    right_gripper.calibrate()
+    rospy.sleep(1.0)
+    openGripper()
     #-----------------------------------------------------#
     ## Add any obstacles to the planning scene here
     position = PoseStamped()
@@ -112,10 +112,10 @@ def main():
                 # Might have to edit this for part 5
                 if not planner.execute_plan(plan):
                     raise Exception("Execution failed")
-                #else:
-                #    if openGrip:
-                #        openGripper()
-                #    closeGripper()
+                else:
+                    if openGrip:
+                        openGripper()
+                    closeGripper()
                     
             except Exception as e:
                 print e
@@ -131,7 +131,7 @@ def main():
     #rospy.Subscriber("gazebo/model_states",ModelStates, callback)
 
     def getBlockPosition():
-        return blockPositions[1].position.x,blockPositions[1].position.y,blockPositions[1].position.z
+        return blockPositions[0].position.x,blockPositions[0].position.y,blockPositions[0].position.z
 
     while not rospy.is_shutdown():
 
