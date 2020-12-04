@@ -27,7 +27,7 @@ def main():
     """
     Main Script
     """
-
+    
     # Make sure that you've looked at and understand path_planner.py before starting
 
     def callback(message):
@@ -122,9 +122,6 @@ def main():
                 traceback.print_exc()
             else:
                 break
-
-
-
     #pos = raw_input("Enter a goal Position for the cubes: [x, y, z]")
     #pos = eval(pos)
     #rospy.init_node('my_node_name', anonymous=True)
@@ -142,6 +139,7 @@ def main():
         #z= 0.772499999999
         #hoverDist = 0.015
         #y_threshhold = 0.05
+        #/cameras/head_camera/image
         x,y,z = getBlockPosition()
     	move_to_block(x, y, z, False)
         move_to_block(x, y, z + 0.05, True)
