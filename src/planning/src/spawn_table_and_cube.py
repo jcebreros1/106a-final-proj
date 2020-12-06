@@ -184,7 +184,7 @@ def load_gazebo_models(table_pose=Pose(position=Point(x=0.75, y=0.0, z=0.0)),
                              table_pose, table_reference_frame)
     except rospy.ServiceException, e:
         rospy.logerr("Spawn SDF service call failed: {0}".format(e))
-
+    
     # Spawn Block URDF
     rospy.wait_for_service('/gazebo/spawn_urdf_model')
     try:
