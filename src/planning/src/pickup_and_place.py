@@ -77,7 +77,7 @@ def main():
 	print('Calibrating...')
 	right_gripper.calibrate()
 	left_gripper.calibrate()
-	rospy.sleep(1.0)
+	#rospy.sleep(1.0)
 	#-----------------------------------------------------#
 	## Add table as obstacle
 	position = PoseStamped()
@@ -131,20 +131,88 @@ def main():
 			plan = left_arm_planner.plan_to_pose(goal, orien_const)
 
 				# Might have to edit this for part 5
-			if not left_arm_planner.execute_plan(plan):
-				raise Exception("Execution failed")
-			else:
-				closeLeftGripper()
+			#if not left_arm_planner.execute_plan(plan):
+				#raise Exception("Execution failed")
+			left_arm_planner.execute_plan(plan)
+			#openLeftGripper()
 		except Exception as e:
 			print e
 			traceback.print_exc()
 
-	def move_on_top_of_cube(x, y, z,  orien_const=[], or_x=0.0, or_y=-1.0, or_z=0.0, or_w=0.0):
+
+	def grasph_cube_with_left_arm(x, y, z,  orien_const=[], or_x=0.0, or_y=-1.0, or_z=0.0, or_w=0.0):
 		#while not rospy.is_shutdown():
 			try:
 				goal = PoseStamped()
 				goal.header.frame_id = "base"
-				hoverDist = 0.1
+				hoverDist = 0
+				x_threshhold = 0.005
+				y_threshhold = -0.03
+				zoffset = .92
+
+				#x, y, and z position
+				goal.pose.position.x = x
+				goal.pose.position.y = y+y_threshhold
+				goal.pose.position.z = z-zoffset+hoverDist
+
+				#Orientation as a quaternion
+				goal.pose.orientation.x = or_x
+				goal.pose.orientation.y = or_y
+				goal.pose.orientation.z = or_z
+				goal.pose.orientation.w = or_w
+
+				plan = left_arm_planner.plan_to_pose(goal, orien_const)
+
+				#raw_input("Press <Enter> to move the left arm to block pose: ")
+				openLeftGripper()
+				# Might have to edit this for part 5
+				#if not left_arm_planner.execute_plan(plan):
+				#	raise Exception("Execution failed")
+				#else:
+				left_arm_planner.execute_plan(plan)
+				closeLeftGripper()
+			except Exception as e:
+				print e
+				traceback.print_exc()
+
+	def moveUp_right_arm(x, y, z,  orien_const=[], or_x=0.0, or_y=-1.0, or_z=0.0, or_w=0.0):
+		try:
+			goal = PoseStamped()
+			goal.header.frame_id = "base"
+			hoverDist = 0.015
+			y_threshhold = 0.04
+			zoffset = .92
+
+				#x, y, and z position
+			goal.pose.position.x = x
+			goal.pose.position.y = y+y_threshhold
+			goal.pose.position.z = z-zoffset+hoverDist+.05
+
+				#Orientation as a quaternion
+			goal.pose.orientation.x = or_x
+			goal.pose.orientation.y = or_y
+			goal.pose.orientation.z = or_z
+			goal.pose.orientation.w = or_w
+
+			plan = right_arm_planner.plan_to_pose(goal, orien_const)
+
+				# Might have to edit this for part 5
+			#if not left_arm_planner.execute_plan(plan):
+				#raise Exception("Execution failed")
+			right_arm_planner.execute_plan(plan)
+			#openRightGripper()
+		except Exception as e:
+			print e
+			traceback.print_exc()
+
+
+	def grasph_cube_with_right_arm(x, y, z,  orien_const=[], or_x=0.0, or_y=-1.0, or_z=0.0, or_w=0.0):
+		#while not rospy.is_shutdown():
+			try:
+				goal = PoseStamped()
+				goal.header.frame_id = "base"
+				hoverDist = 0.01
+				x_threshhold = 0.0
 				y_threshhold = 0.05
 				zoffset = .92
 
@@ -159,27 +227,27 @@ def main():
 				goal.pose.orientation.z = or_z
 				goal.pose.orientation.w = or_w
 
-				plan = left_arm_planner.plan_to_pose(goal, orien_const)
+				plan = right_arm_planner.plan_to_pose(goal, orien_const)
 
 				#raw_input("Press <Enter> to move the left arm to block pose: ")
-				openLeftGripper()
+				openRightGripper()
 				# Might have to edit this for part 5
-				if not left_arm_planner.execute_plan(plan):
-					raise Exception("Execution failed")
-				else:
-					closeLeftGripper()
+				#if not left_arm_planner.execute_plan(plan):
+				#	raise Exception("Execution failed")
+				#else:
+				right_arm_planner.execute_plan(plan)
+				closeRightGripper()
 			except Exception as e:
 				print e
 				traceback.print_exc()
 
-
-	def grasph_cube_with_left_arm(x, y, z,  orien_const=[], or_x=0.0, or_y=-1.0, or_z=0.0, or_w=0.0):
-		#while not rospy.is_shutdown():
+	def drop_left_cube_in_neutral_pos(x=0.8225, y=0.1265, z=0.7725, orien_const=[], or_x=0.0, or_y=-1.0, or_z=0.0, or_w=0.0):
 			try:
 				goal = PoseStamped()
 				goal.header.frame_id = "base"
-				hoverDist = 0.03
-				y_threshhold = 0.03
+				hoverDist = 0
+				x_threshhold = 0.0
+				y_threshhold = 0.05
 				zoffset = .92
 
 				#x, y, and z position
@@ -193,34 +261,31 @@ def main():
 				goal.pose.orientation.z = or_z
 				goal.pose.orientation.w = or_w
 
-				plan = left_arm_planner.plan_to_pose(goal, orien_const)
+				plan = right_arm_planner.plan_to_pose(goal, orien_const)
 
 				#raw_input("Press <Enter> to move the left arm to block pose: ")
-				openLeftGripper()
 				# Might have to edit this for part 5
-				if not left_arm_planner.execute_plan(plan):
-					raise Exception("Execution failed")
-				else:
-					closeLeftGripper()
+				#if not left_arm_planner.execute_plan(plan):
+				#	raise Exception("Execution failed")
+				#else:
+				right_arm_planner.execute_plan(plan)
+				openRightGripper()
 			except Exception as e:
 				print e
 				traceback.print_exc()
-	#pos = raw_input("Enter a goal Position for the cubes: [x, y, z]")
-	#pos = eval(pos)
-	#rospy.init_node('my_node_name', anonymous=True)
-	#rospy.Subscriber("gazebo/model_states",ModelStates, callback)
+
 
 	def getBlockPosition():
-		return blockPositions[1].position.x,blockPositions[1].position.y,blockPositions[1].position.z
+		return blockPositions[0].position.x,blockPositions[0].position.y,blockPositions[0].position.z
 
 	#while not rospy.is_shutdown():
 	x,y,z = getBlockPosition()
 	#print(x,y,z)
 	#print(blockPositions[1])
-	#move_on_top_of_cube(x,y,z)
 	#grasph_cube_with_left_arm(x, y, z)
-	moveUp_left_arm(x,y,z)
-	#moveUp_left_arm(x, y, z)
+	#moveUp_left_arm(x,y,z)
+	grasph_cube_with_right_arm(x, y, z)
+	moveUp_right_arm(x,y,z)
 	#move_to_block(x, y, z + 0.05, True)
 
 
