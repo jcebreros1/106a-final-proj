@@ -18,10 +18,16 @@ from geometry_msgs.msg import PoseStamped
 from path_planner import PathPlanner
 from baxter_interface import gripper as robot_gripper
 
-# Uncomment this line for part 5 of Lab 5
-# from controller import Controller
+import cv2
+from sensor_msgs.msg import Image
+from cv_bridge import CvBridge, CvBridgeError
+import argparse
+
 
 blockPositions = [0]*2
+height = 0
+width = 0
+cv_image = np.array([0,1,2])
 
 def main():
 	"""
@@ -46,18 +52,59 @@ def main():
 		size =  [0.025,.025,0.025]
 		left_arm_planner.add_box_obstacle(size, 'cube', position)
 
-	def callback(message):
-		blockPositions[0] = message.pose[3]
-		blockPositions[1] = message.pose[4]
-		#print(blockPositions[0].orientation)
-		#for o in blockPositions:
-		#add_obstacle_to_left_arm(blockPositions[0])
+	def callback(messageModels):
+		blockPositions[0] = messageModels.pose[3]
+		blockPositions[1] = messageModels.pose[4]
+
+	def image_plan():
+		data = rospy.wait_for_message("/cameras/left_hand_camera/image",Image)
+
+		try:
+			height = data.height
+			width = data.width
+			#print("width", width)
+			#print("height", height)
+			cv_image = CvBridge().imgmsg_to_cv2(data, "bgr8")
+			cv2.imwrite('/home/hames10/ros_workspaces/106a-final-proj/src/baxter_view.png', cv_image)
+			#print("shape", cv_image.shape)
+		except CvBridgeError as e:
+			print(e)
+		#rospy.init_node('image_converter', anonymous=True)
+		path = '/home/hames10/ros_workspaces/106a-final-proj/src/baxter_view.png'
+		return detectColor(path)
+		
+	def detectColor(path):
+
+		image = cv2.imread(path)
+		#hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+		greenTup = ((37,0,0), (73, 255, 255))
+		isGreen = mask(greenTup, image)
+		
+		blueTup = ((93, 0, 0), (129, 255, 255))
+		isBlue = mask(blueTup, image)
+
+		if (isGreen):
+			return "green"
+		elif isBlue:
+			return "blue"
+
+	def mask(boundary, image):
+		lower = boundary[0]
+		upper = boundary[1]
+		hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+		mask = cv2.inRange(hsv, lower, upper)
+
+		output = cv2.bitwise_and(image, image, mask = mask)
+		# show the images
+		cv2.imwrite("/home/hames10/ros_workspaces/106a-final-proj/src/output.png", output)
+		return not np.all(output==0)
+
 
 	left_arm_planner = PathPlanner("left_arm")
-	right_arm_planner = PathPlanner("right_arm")
+	#right_arm_planner = PathPlanner("right_arm")
 
 	rospy.init_node('moveit_node')
-	rospy.Subscriber("gazebo/model_states",ModelStates, callback)
+	models = rospy.Subscriber("gazebo/model_states",ModelStates, callback)
 
 	left_gripper = robot_gripper.Gripper('left')
 	right_gripper = robot_gripper.Gripper('right')
@@ -75,9 +122,10 @@ def main():
 		left_gripper.open()
 		rospy.sleep(1.0)
 	print('Calibrating...')
-	right_gripper.calibrate()
+	#right_gripper.calibrate()
 	left_gripper.calibrate()
 	rospy.sleep(1.0)
+	
 	#-----------------------------------------------------#
 	## Add table as obstacle
 	position = PoseStamped()
@@ -95,7 +143,8 @@ def main():
 
 	size =  [0.40,1.20,0.10]
 	left_arm_planner.add_box_obstacle(size, 'table', position)
-	right_arm_planner.add_box_obstacle(size, 'table', position)
+	#right_arm_planner.add_box_obstacle(size, 'table', position)
+	
 	#-----------------------------------------------------#
 
 	# #Create a path constraint for the arm
@@ -113,14 +162,14 @@ def main():
 		try:
 			goal = PoseStamped()
 			goal.header.frame_id = "base"
-			hoverDist = 0.03
-			y_threshhold = 0.03
+			hoverDist = 0.015
+			y_threshhold = -0.04
 			zoffset = .92
 
 				#x, y, and z position
 			goal.pose.position.x = x
 			goal.pose.position.y = y+y_threshhold
-			goal.pose.position.z = z-zoffset+hoverDist+.05
+			goal.pose.position.z = z-zoffset+hoverDist
 
 				#Orientation as a quaternion
 			goal.pose.orientation.x = or_x
@@ -130,7 +179,6 @@ def main():
 
 			plan = left_arm_planner.plan_to_pose(goal, orien_const)
 
-				# Might have to edit this for part 5
 			if not left_arm_planner.execute_plan(plan):
 				raise Exception("Execution failed")
 			else:
@@ -140,12 +188,12 @@ def main():
 			traceback.print_exc()
 
 	def move_on_top_of_cube(x, y, z,  orien_const=[], or_x=0.0, or_y=-1.0, or_z=0.0, or_w=0.0):
-		#while not rospy.is_shutdown():
+		while not rospy.is_shutdown():
 			try:
 				goal = PoseStamped()
 				goal.header.frame_id = "base"
-				hoverDist = 0.1
-				y_threshhold = 0.05
+				hoverDist = 0.020
+				y_threshhold = 0.02
 				zoffset = .92
 
 				#x, y, and z position
@@ -161,24 +209,25 @@ def main():
 
 				plan = left_arm_planner.plan_to_pose(goal, orien_const)
 
-				#raw_input("Press <Enter> to move the left arm to block pose: ")
+				raw_input("Press <Enter> to move the left arm to block pose: ")
 				openLeftGripper()
 				# Might have to edit this for part 5
 				if not left_arm_planner.execute_plan(plan):
 					raise Exception("Execution failed")
 				else:
 					closeLeftGripper()
+					break
 			except Exception as e:
 				print e
 				traceback.print_exc()
 
 
-	def grasph_cube_with_left_arm(x, y, z,  orien_const=[], or_x=0.0, or_y=-1.0, or_z=0.0, or_w=0.0):
-		#while not rospy.is_shutdown():
+	def grasp_cube_with_left_arm(x, y, z,  orien_const=[], or_x=0.0, or_y=-1.0, or_z=0.0, or_w=0.0):
+		while not rospy.is_shutdown():
 			try:
 				goal = PoseStamped()
 				goal.header.frame_id = "base"
-				hoverDist = 0.03
+				hoverDist = 0.015
 				y_threshhold = 0.03
 				zoffset = .92
 
@@ -197,11 +246,12 @@ def main():
 
 				#raw_input("Press <Enter> to move the left arm to block pose: ")
 				openLeftGripper()
-				# Might have to edit this for part 5
+				
 				if not left_arm_planner.execute_plan(plan):
 					raise Exception("Execution failed")
 				else:
 					closeLeftGripper()
+
 			except Exception as e:
 				print e
 				traceback.print_exc()
@@ -213,15 +263,18 @@ def main():
 	def getBlockPosition():
 		return blockPositions[1].position.x,blockPositions[1].position.y,blockPositions[1].position.z
 
-	#while not rospy.is_shutdown():
-	x,y,z = getBlockPosition()
-	#print(x,y,z)
-	#print(blockPositions[1])
-	#move_on_top_of_cube(x,y,z)
-	#grasph_cube_with_left_arm(x, y, z)
-	moveUp_left_arm(x,y,z)
-	#moveUp_left_arm(x, y, z)
-	#move_to_block(x, y, z + 0.05, True)
+	
+	while not rospy.is_shutdown():
+	
+		x,y,z = getBlockPosition()
+		#print(x,y,z)
+		#print(blockPositions[1])
+		move_on_top_of_cube(x, y, z)
+		raw_input("press Enter to check if cube is correct color")
+		print(image_plan())
+		#moveUp_left_arm(x,y,z)
+		#moveUp_left_arm(x, y, z)
+		#move_to_block(x, y, z + 0.05, True)
 
 
 if __name__ == '__main__':
