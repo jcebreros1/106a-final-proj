@@ -280,25 +280,27 @@ def main():
             except Exception as e:
                 print e
                 traceback.print_exc()
-    #pos = raw_input("Enter a goal Position for the cubes: [x, y, z]")
-    #pos = eval(pos)
-    #rospy.init_node('my_node_name', anonymous=True)
-    #rospy.Subscriber("gazebo/model_states",ModelStates, callback)
-
+    
     def getBlockPosition():
         return blockPositions[1].position.x,blockPositions[1].position.y,blockPositions[1].position.z
 
     #while not rospy.is_shutdown():
-    
-        #x,y,z = getBlockPosition()
-        #print(x,y,z)
-        #print(blockPositions[1])
-        #move_on_top_of_cube(x, y, z)
-        #raw_input("press Enter to check if cube is correct color")
-        #print(image_plan())
-        #moveUp_left_arm(x,y,z)
-        #moveUp_left_arm(x, y, z)
-        #move_to_block(x, y, z + 0.05, True)
+    seq = raw_input("What sequence would you like []:" )
+    seq = eval(seq)  #iterate throught the list and give it a proper position to be displayed as
+    hardCodedPositions = []
+    for key in map_Arms.keys():
+        allPositionList = map_Arms[key] #key is either left_arm or right_arm
+        for position in allPositionList:
+            x,y,z = position.x, position.y, position.z
+
+            move_on_top_of_cube(x, y, z)
+            raw_input("press Enter to check cube color:" )
+            color = image_plan()
+            if color in seq:
+                index = seq.index(color)
+                toPos = hardCodedPositions[i] 
+                move_on_top_of_cube(toPos.x, toPos.y, toPos.z)
+                #we then move arm away from there
 
 if __name__ == '__main__':
     main()
