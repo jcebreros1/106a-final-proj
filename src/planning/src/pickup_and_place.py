@@ -94,10 +94,6 @@ def main():
 
         image = cv2.imread(path)
         #hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-        greenTup = ((44,0,0), (60, 255, 255))
-        isGreen = mask(greenTup, image)
-        if isGreen:
-            return "green"
         blueTup = ((93, 0, 0), (129, 255, 255))
         isBlue = mask(blueTup, image)
         if isBlue:
@@ -108,10 +104,15 @@ def main():
         if isPurple:
             return "purple"
         
-        yellowTup = ((21, 0, 0), (35, 255, 255))
+        yellowTup = ((30, 0, 0), (30, 255, 255))
         isYellow = mask(yellowTup, image)
         if isYellow:
             return "yellow"
+
+        greenTup = ((44,0,0), (60, 255, 255))
+        isGreen = mask(greenTup, image)
+        if isGreen:
+            return "green"
         return "none"
 
     def mask(boundary, image):
@@ -123,8 +124,9 @@ def main():
         output = cv2.bitwise_and(image, image, mask = mask)
         # show the images
         cv2.imwrite("/home/jesuscebreros/ros_workspaces/106a-final-proj/src/output.png", output)
+        print(np.sum(output))
         #return not np.all(output==0)
-        return np.sum(output)>100
+        return np.sum(output)>50000
 
 
     #left_arm_planner = PathPlanner("left_arm")
@@ -266,13 +268,17 @@ def main():
             for position in allPositionList:
                 x,y,z = position.x, position.y, position.z
                 print(key)
-                move_arm(key,x, y, z+.1)
-                grasp(key,x, y, z)
+                if key == 'right_arm':
+                    move_arm(key,x, y+.03, z+.1)
+                    grasp(key,x, y+.03, z)
+                else:
+                    move_arm(key,x, y, z+.1)
+                    grasp(key,x, y, z)
                 raw_input("press Enter to check cube color:")
                 color = image_plan(key)
                 print(color)
                 print(seq)
-                #['blue','green','yellow','purple']
+                #['yellow','purple','blue','green']
                 if color in seq:
                     index = seq.index(color)
                     #print(index)
