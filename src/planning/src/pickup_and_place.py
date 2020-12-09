@@ -69,8 +69,11 @@ def main():
         #blockPositions[0] = messageModels.pose[3]
         #blockPositions[1] = messageModels.pose[4]
 
-    def image_plan():
-        data = rospy.wait_for_message("/cameras/left_hand_camera/image",Image)
+    def image_plan(key):
+        if key == 'left_arm':
+            data = rospy.wait_for_message("/cameras/left_hand_camera/image",Image)
+        else:
+            data = rospy.wait_for_message("/cameras/right_hand_camera/image",Image)
 
         try:
             height = data.height
@@ -78,11 +81,12 @@ def main():
             #print("width", width)
             #print("height", height)
             cv_image = CvBridge().imgmsg_to_cv2(data, "bgr8")
-            cv2.imwrite('/home/jesuscebreros/ros_workspaces/106a-final-proj/src/baxter_view.png', cv_image)
+            #cv2.imwrite('/home/jesuscebreros/ros_workspaces/106a-final-proj/src/baxter_view.png', cv_image)
             #print("shape", cv_image.shape)
         except CvBridgeError as e:
             print(e)
         #rospy.init_node('image_converter', anonymous=True)
+        cv2.imwrite('/home/jesuscebreros/ros_workspaces/106a-final-proj/src/baxter_view.png', cv_image)
         path = '/home/jesuscebreros/ros_workspaces/106a-final-proj/src/baxter_view.png'
         return detectColor(path)
         
@@ -90,25 +94,23 @@ def main():
 
         image = cv2.imread(path)
         #hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-        greenTup = ((37,0,0), (73, 255, 255))
+        greenTup = ((44,0,0), (60, 255, 255))
         isGreen = mask(greenTup, image)
-        
+        if isGreen:
+            return "green"
         blueTup = ((93, 0, 0), (129, 255, 255))
         isBlue = mask(blueTup, image)
+        if isBlue:
+            return "blue"
 
         purpleTup = ((138,0,0), (161, 255, 255))
         isPurple = mask(purpleTup, image)
+        if isPurple:
+            return "purple"
         
         yellowTup = ((21, 0, 0), (35, 255, 255))
         isYellow = mask(yellowTup, image)
-
-        if isGreen:
-            return "green"
-        elif isBlue:
-            return "blue"
-        elif isPurple:
-            return "purple"
-        elif isYellow:
+        if isYellow:
             return "yellow"
         return "none"
 
@@ -121,7 +123,8 @@ def main():
         output = cv2.bitwise_and(image, image, mask = mask)
         # show the images
         cv2.imwrite("/home/jesuscebreros/ros_workspaces/106a-final-proj/src/output.png", output)
-        return not np.all(output==0)
+        #return not np.all(output==0)
+        return np.sum(output)>100
 
 
     #left_arm_planner = PathPlanner("left_arm")
@@ -266,7 +269,7 @@ def main():
                 move_arm(key,x, y, z+.1)
                 grasp(key,x, y, z)
                 raw_input("press Enter to check cube color:")
-                color = image_plan()
+                color = image_plan(key)
                 print(color)
                 print(seq)
                 #['blue','green','yellow','purple']
