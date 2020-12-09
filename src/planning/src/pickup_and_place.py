@@ -275,6 +275,7 @@ def main():
                     #print(index)
                     toPos = hardCodedPositions[index] 
                     print(toPos)
+                    #changing
                     move_arm(key,x, y, z+.1)
                     move_arm(key,toPos[0],toPos[1],toPos[2]+.05)
                     #print('moved')
