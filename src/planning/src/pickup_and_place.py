@@ -265,7 +265,7 @@ def main():
                 print(key)
                 move_arm(key,x, y, z+.1)
                 grasp(key,x, y, z)
-                raw_input("press Enter to check cube color:" )
+                raw_input("press Enter to check cube color:")
                 color = image_plan()
                 print(color)
                 print(seq)
@@ -275,7 +275,8 @@ def main():
                     #print(index)
                     toPos = hardCodedPositions[index] 
                     print(toPos)
-                    move_arm(key,.85,0.0,.875)
+                    move_arm(key,x, y, z+.1)
+                    move_arm(key,toPos[0],toPos[1],toPos[2]+.05)
                     #print('moved')
                     if key == 'left_arm':
                         openLeftGripper()
